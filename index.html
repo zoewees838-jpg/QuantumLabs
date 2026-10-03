@@ -1,113 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexora AI</title>
-
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quantum Labs</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-    <header class="container">
-        <div class="logo">NEXORA</div>
+  <header>
+    <h1>Quantum Labs</h1>
+  </header>
 
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#research">Research</a>
-            <a href="#vip">VIP</a>
-            <a href="#account">Account</a>
-        </nav>
-    </header>
+  <main>
+    <div id="auth-container" style="max-width: 400px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+      <h2>Account Access</h2>
+      <input type="email" id="email-input" placeholder="Enter your email" style="width: 100%; padding: 8px; margin-bottom: 10px;" required />
+      <input type="password" id="password-input" placeholder="Enter your password" style="width: 100%; padding: 8px; margin-bottom: 10px;" required />
+      
+      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <button id="login-btn" style="flex: 1; padding: 10px;">Log In</button>
+        <button id="signup-btn" style="flex: 1; padding: 10px;">Sign Up</button>
+      </div>
+      
+      <p id="auth-status" style="font-weight: bold; color: #333;"></p>
+    </div>
+  </main>
 
-    <main>
+  <footer>
+    <p>© 2026 Nexora. All rights reserved.</p>
+    <p>Information provided by Nexora is for educational purposes only.</p>
+  </footer>
 
-        <section class="hero" id="home">
-            <h1>Understand the market.<br>Make informed decisions.</h1>
-
-            <p>
-                AI-powered market research, education and market updates
-                in one place.
-            </p>
-
-            <a href="#research" class="btn">Explore Nexora</a>
-        </section>
-
-        <section class="container" id="research">
-
-            <div class="hero">
-                <h1>What Nexora Offers</h1>
-                <p>Tools designed to help you understand financial markets.</p>
-            </div>
-
-            <div class="features">
-
-                <div class="card">
-                    <h2>📊 Market Research</h2>
-                    <p>
-                        Get simplified research and insights to help you
-                        understand market movements.
-                    </p>
-                </div>
-
-                <div class="card">
-                    <h2>🎓 Education</h2>
-                    <p>
-                        Learn the basics of markets, investing and financial
-                        analysis.
-                    </p>
-                </div>
-
-                <div class="card">
-                    <h2>⚡ Market Updates</h2>
-                    <p>
-                        Stay informed with important market developments
-                        and updates.
-                    </p>
-                </div>
-
-            </div>
-
-        </section>
-
-        <section class="hero" id="vip">
-            <h1>Nexora VIP</h1>
-
-            <p>
-                Unlock premium market research and exclusive insights.
-            </p>
-
-            <div class="card">
-                <h2>₦10,000 / 30 Days</h2>
-
-                <p>
-                    ✓ Premium market research<br>
-                    ✓ Exclusive market updates<br>
-                    ✓ Advanced educational content<br>
-                    ✓ VIP access
-                </p>
-
-                <br>
-
-                <a href="#" class="btn">Subscribe Now</a>
-            </div>
-        </section>
-
-        <section class="hero" id="account">
-            <h1>Your Account</h1>
-
-            <p>
-                Account features will be available when Nexora launches.
-            </p>
-        </section>
-
-    </main>
-
-    <footer>
-        <p>© 2026 Nexora. All rights reserved.</p>
-        <p>Information provided by Nexora is for educational purposes only.</p>
-    </footer>
-<script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
