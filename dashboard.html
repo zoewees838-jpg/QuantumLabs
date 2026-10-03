@@ -1,544 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nexora - Portal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultimate Tires - VIP Dashboard</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-    body {
-      background-color: #0b0507;
-      color: #f1f5f9;
-      min-height: 100vh;
-      padding-bottom: 70px; /* Space for mobile nav bar */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* Top Bar Header */
-    .top-header {
-      background: #14080b;
-      border-bottom: 1px solid #2e1017;
-      padding: 15px 20px;
+    body {
+      background-color: #121212;
+      color: #f5f5f5;
+      padding-bottom: 60px;
+    }
+
+    /* TOP NAVIGATION HEADER */
+    .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .brand-logo {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: #ff2a4b;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      text-shadow: 0 0 12px rgba(255, 42, 75, 0.5);
-    }
-    .user-pill {
-      font-size: 0.75rem;
-      background: rgba(30, 10, 16, 0.8);
-      border: 1px solid #ff2a4b44;
-      padding: 4px 12px;
-      border-radius: 20px;
-      color: #ff6b81;
+      padding: 16px 32px;
+      background-color: #1e1e1e;
+      border-bottom: 1px solid #333;
     }
 
-    /* Main Layout Container */
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 15px;
-    }
-
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-    }
-
-    /* Ticker Banner */
-    .ticker-bar {
-      background: #1a0a0f;
-      border: 1px solid #3d141f;
-      border-radius: 8px;
-      padding: 10px 15px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
-      font-size: 0.82rem;
-      color: #fda4af;
-    }
-    .ticker-icon {
-      background: #ff2a4b;
-      color: #ffffff;
-      border-radius: 4px;
-      padding: 2px 6px;
-      font-weight: bold;
-      font-size: 0.7rem;
-    }
-
-    /* Category Filter Buttons */
-    .category-scroll {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
-    }
-    .cat-btn {
-      background: #18090d;
-      border: 1px solid #33121a;
-      color: #94a3b8;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-    .cat-btn.active {
-      background: linear-gradient(135deg, #ff2a4b 0%, #b91c1c 100%);
-      color: #ffffff;
-      border: none;
-      box-shadow: 0 0 12px rgba(255, 42, 75, 0.4);
-    }
-
-    /* Stats Overview Card */
-    .balance-card {
-      background: linear-gradient(180deg, #1f0a10 0%, #100407 100%);
-      border: 1px solid #ff2a4b44;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-    }
-    .card-title {
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      margin-bottom: 12px;
-      text-transform: uppercase;
+    .logo h2 {
+      font-size: 22px;
+      font-weight: 700;
       letter-spacing: 0.5px;
     }
-    .balance-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-    .stat-box {
-      background: rgba(11, 5, 7, 0.7);
-      border: 1px solid #2e1017;
-      padding: 14px;
-      border-radius: 8px;
-    }
-    .stat-label {
-      font-size: 0.75rem;
-      color: #94a3b8;
-      margin-bottom: 4px;
-    }
-    .stat-value {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #ff2a4b;
-    }
 
-    /* Red Ultimate Tier Cards */
-    .tier-card {
-      background: #14080b;
-      border: 1px solid #33121a;
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      position: relative;
-    }
-    .tier-card.featured {
-      border: 1px solid #ff2a4b;
-      box-shadow: 0 0 15px rgba(255, 42, 75, 0.2);
-    }
-    .tier-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #260d13;
-      padding-bottom: 8px;
-    }
-    .tier-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #ffffff;
-    }
-    .badge-tag {
-      background: rgba(255, 42, 75, 0.15);
-      border: 1px solid #ff2a4b;
-      color: #ff6b81;
-      font-size: 0.7rem;
+    .logo span {
+      color: #e63946;
+      font-size: 14px;
+      background: rgba(230, 57, 70, 0.15);
       padding: 2px 8px;
       border-radius: 4px;
-      font-weight: 600;
+      margin-left: 6px;
     }
-    .tier-body {
+
+    /* TOP-RIGHT USER PROFILE WIDGET */
+    .user-profile-widget {
       display: flex;
-      gap: 15px;
       align-items: center;
+      gap: 12px;
+      background: #2a2a2a;
+      padding: 8px 16px;
+      border-radius: 30px;
+      border: 1px solid #444;
     }
-    .tier-icon-box {
-      width: 60px;
-      height: 60px;
-      background: radial-gradient(circle, rgba(255,42,75,0.25) 0%, rgba(20,8,11,1) 70%);
-      border: 1px solid #ff2a4b44;
-      border-radius: 8px;
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      background: #e63946;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.6rem;
-    }
-    .tier-details {
-      flex: 1;
-    }
-    .detail-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.82rem;
-      margin-bottom: 5px;
-    }
-    .detail-label {
-      color: #94a3b8;
-    }
-    .detail-value {
-      color: #4ade80;
-      font-weight: 600;
+      font-size: 14px;
     }
 
-    /* Buttons */
-    .btn-action {
-      width: 100%;
-      background: linear-gradient(135deg, #ff2a4b 0%, #b91c1c 100%);
-      color: #ffffff;
-      border: none;
-      padding: 12px;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      box-shadow: 0 3px 12px rgba(255, 42, 75, 0.35);
-    }
-
-    /* VIP Tier Table */
-    .vip-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.82rem;
-      margin-top: 10px;
-    }
-    .vip-table th, .vip-table td {
-      padding: 10px 8px;
-      text-align: left;
-      border-bottom: 1px solid #2e1017;
-    }
-    .vip-table th {
-      color: #94a3b8;
-      font-weight: 600;
-    }
-
-    /* Forms */
-    .form-group {
-      margin-bottom: 15px;
-    }
-    .form-group label {
-      display: block;
-      font-size: 0.8rem;
-      color: #cbd5e1;
-      margin-bottom: 5px;
-    }
-    .form-group input {
-      width: 100%;
-      background: #0b0507;
-      border: 1px solid #33121a;
-      padding: 10px;
-      color: #ffffff;
-      border-radius: 6px;
-    }
-
-    /* Bottom Nav Bar */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: #14080b;
-      border-top: 1px solid #2e1017;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 100;
-    }
-    .nav-tab {
+    .user-details {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      color: #64748b;
-      font-size: 0.7rem;
+    }
+
+    .user-email {
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .user-handle {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    /* MAIN CONTAINER */
+    .dashboard-container {
+      max-width: 1100px;
+      margin: 40px auto 0;
+      padding: 0 20px;
+    }
+
+    .vip-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .vip-header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .vip-header p {
+      color: #aaa;
+      font-size: 15px;
+    }
+
+    /* VIP PLANS GRID */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .plan-card {
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 30px;
+      background: #1e1e1e;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .plan-card.popular {
+      border: 2px solid #e63946;
+      background: #241c1d;
+    }
+
+    .badge {
+      position: absolute;
+      top: -12px;
+      right: 20px;
+      background: #e63946;
+      color: #fff;
+      padding: 4px 12px;
+      font-size: 11px;
+      border-radius: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .plan-card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      font-size: 30px;
+      font-weight: bold;
+      margin: 15px 0;
+      color: #fff;
+    }
+
+    .price span {
+      font-size: 14px;
+      color: #aaa;
+      font-weight: normal;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin: 20px 0 30px;
+    }
+
+    .feature-list li {
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .feature-list li strong {
+      color: #fff;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      background: #e63946;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 14px;
       cursor: pointer;
-      width: 33.33%;
+      transition: background 0.2s;
     }
-    .nav-tab.active {
-      color: #ff2a4b;
+
+    .btn-primary:hover {
+      background: #d62839;
     }
-    .nav-tab-icon {
-      font-size: 1.1rem;
+
+    .btn-disabled {
+      width: 100%;
+      padding: 12px;
+      background: #333;
+      color: #777;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="top-header">
-    <div class="brand-logo">NEXORA</div>
-    <div class="user-pill" id="user-display">Loading...</div>
+  <!-- NAVBAR WITH TOP-RIGHT USER DETAILS -->
+  <header class="navbar">
+    <div class="logo">
+      <h2>Ultimate Tires <span>VIP</span></h2>
+    </div>
+
+    <div class="user-profile-widget">
+      <div class="avatar" id="avatar-initials">UT</div>
+      <div class="user-details">
+        <span class="user-email" id="user-email-display">user@example.com</span>
+        <span class="user-handle" id="user-handle-display">@user</span>
+      </div>
+    </div>
   </header>
 
-  <div class="container">
-
-    <!-- HOME / ULTIMATE DASHBOARD TAB -->
-    <section id="tab-home" class="tab-content active">
-      
-      <!-- Announcement Banner -->
-      <div class="ticker-bar">
-        <span class="ticker-icon">NEXORA</span>
-        <marquee behavior="scroll" direction="left">Welcome to Nexora Ultimate. Track performance and scale growth plans in real time.</marquee>
-      </div>
-
-      <!-- Categories -->
-      <div class="category-scroll">
-        <button class="cat-btn active">Overview</button>
-        <button class="cat-btn">Ultimate Tiers</button>
-        <button class="cat-btn">VIP Expansion</button>
-      </div>
-
-      <!-- Revenue Overview Card -->
-      <div class="balance-card">
-        <div class="card-title">Nexora Performance Tracker</div>
-        <div class="balance-grid">
-          <div class="stat-box">
-            <div class="stat-label">Total Earned</div>
-            <div class="stat-value" id="total-earned">₦0.00</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">This Month</div>
-            <div class="stat-value" id="month-earned">₦0.00</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ultimate Plan 1 -->
-      <div class="tier-card featured">
-        <div class="tier-header">
-          <span class="tier-title">Nexora Ultimate Tier I</span>
-          <span class="badge-tag">Popular</span>
-        </div>
-        <div class="tier-body">
-          <div class="tier-icon-box">🔥</div>
-          <div class="tier-details">
-            <div class="detail-row">
-              <span class="detail-label">Duration:</span>
-              <span style="color:#ffffff;">3 Days</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Projected Growth:</span>
-              <span class="detail-value">₦7,580</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Commitment:</span>
-              <span style="color:#ff2a4b; font-weight:700;">₦3,000</span>
-            </div>
-          </div>
-        </div>
-        <button class="btn-action" onclick="alert('Plan initialized')">Activate Plan</button>
-      </div>
-
-      <!-- Ultimate Plan 2 -->
-      <div class="tier-card">
-        <div class="tier-header">
-          <span class="tier-title">Nexora Ultimate Tier II</span>
-          <span class="badge-tag">High Growth</span>
-        </div>
-        <div class="tier-body">
-          <div class="tier-icon-box">💎</div>
-          <div class="tier-details">
-            <div class="detail-row">
-              <span class="detail-label">Duration:</span>
-              <span style="color:#ffffff;">5 Days</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Projected Growth:</span>
-              <span class="detail-value">₦28,500</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Commitment:</span>
-              <span style="color:#ff2a4b; font-weight:700;">₦19,000</span>
-            </div>
-          </div>
-        </div>
-        <button class="btn-action" onclick="alert('Plan initialized')">Activate Plan</button>
-      </div>
-
-    </section>
-
-    <!-- VIP TIERS TAB -->
-    <section id="tab-vip" class="tab-content">
-      <div class="balance-card">
-        <h3 style="color:#ff2a4b; margin-bottom: 10px;">Nexora VIP Tiers</h3>
-        <p style="font-size:0.8rem; color:#94a3b8;">High performance, optimal task returns, and exclusive tier benefits.</p>
-        
-        <table class="vip-table">
-          <thead>
-            <tr>
-              <th>Tier</th>
-              <th>Commitment</th>
-              <th>Est. Return</th>
-              <th>Cycle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="color:#ff2a4b; font-weight:bold;">VIP 1</td>
-              <td>₦3,000</td>
-              <td style="color:#4ade80;">₦7,581</td>
-              <td>3 Days</td>
-            </tr>
-            <tr>
-              <td style="color:#ff2a4b; font-weight:bold;">VIP 2</td>
-              <td>₦19,000</td>
-              <td style="color:#4ade80;">₦28,519</td>
-              <td>3 Days</td>
-            </tr>
-            <tr>
-              <td style="color:#ff2a4b; font-weight:bold;">VIP 3</td>
-              <td>₦45,000</td>
-              <td style="color:#4ade80;">₦89,955</td>
-              <td>3 Days</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- SETTINGS / PROFILE TAB -->
-    <section id="tab-profile" class="tab-content">
-      <div class="balance-card">
-        <h3 style="color:#ff2a4b; margin-bottom:15px;">Account Settings</h3>
-        <div class="form-group">
-          <label>Registered Email</label>
-          <input type="text" id="profile-email" disabled />
-        </div>
-        <div class="form-group">
-          <label>User Identifier</label>
-          <input type="text" id="profile-uid" disabled />
-        </div>
-        <button class="btn-action" id="reset-password-btn" style="background:#260d13; border: 1px solid #ff2a4b44; margin-bottom:10px;">Send Password Reset Link</button>
-        <button class="btn-action" id="logout-btn" style="background:#b91c1c;">Log Out</button>
-        <p id="action-msg" style="font-size:0.8rem; margin-top:10px; text-align:center;"></p>
-      </div>
-    </section>
-
-  </div>
-
-  <!-- Bottom Navigation Bar -->
-  <nav class="bottom-nav">
-    <div class="nav-tab active" onclick="switchNav(event, 'home')">
-      <span class="nav-tab-icon">🔥</span>
-      <span>Ultimate</span>
+  <!-- MAIN VIP EXPANSION SECTION -->
+  <main class="dashboard-container">
+    <div class="vip-header">
+      <h1>Ultimate Tires VIP Plans</h1>
+      <p>Choose a tier to access emergency roadside service, custom tire health tracking, and member discounts.</p>
     </div>
-    <div class="nav-tab" onclick="switchNav(event, 'vip')">
-      <span class="nav-tab-icon">👑</span>
-      <span>VIP Tiers</span>
+
+    <div class="plans-grid">
+      <!-- STANDARD PLAN -->
+      <div class="plan-card">
+        <div>
+          <h3>Standard Plan</h3>
+          <div class="price">Free</div>
+          <ul class="feature-list">
+            <li>✓ Basic tire health inspections</li>
+            <li>✓ Standard emergency response line</li>
+            <li>✓ Regular retail pricing on tires</li>
+          </ul>
+        </div>
+        <button class="btn-disabled" disabled>Current Active Plan</button>
+      </div>
+
+      <!-- VIP PRO PLAN -->
+      <div class="plan-card popular">
+        <div class="badge">Most Popular</div>
+        <div>
+          <h3>VIP Pro</h3>
+          <div class="price">₦15,000 <span>/ month</span></div>
+          <ul class="feature-list">
+            <li>✓ <strong>15-Min Priority</strong> Roadside Dispatch</li>
+            <li>✓ <strong>15% Discount</strong> on all tire purchases</li>
+            <li>✓ 2 Free Wheel Alignments & Balancing yearly</li>
+            <li>✓ Advanced 3D Tread Wear Tracking</li>
+          </ul>
+        </div>
+        <button class="btn-primary" onclick="triggerPayment('VIP Pro', 15000)">Activate Plan</button>
+      </div>
+
+      <!-- ULTIMATE FLEET PLAN -->
+      <div class="plan-card">
+        <div>
+          <h3>Ultimate Fleet</h3>
+          <div class="price">₦45,000 <span>/ month</span></div>
+          <ul class="feature-list">
+            <li>✓ Coverage for up to 5 Vehicles</li>
+            <li>✓ <strong>30% Discount</strong> on all tires & rims</li>
+            <li>✓ Unlimited Free Alignments & Balancing</li>
+            <li>✓ Dedicated 24/7 Fleet Support Manager</li>
+          </ul>
+        </div>
+        <button class="btn-primary" onclick="triggerPayment('Ultimate Fleet', 45000)">Activate Plan</button>
+      </div>
     </div>
-    <div class="nav-tab" onclick="switchNav(event, 'profile')">
-      <span class="nav-tab-icon">⚙️</span>
-      <span>Settings</span>
-    </div>
-  </nav>
+  </main>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { 
-      getAuth, 
-      onAuthStateChanged, 
-      signOut, 
-      sendPasswordResetEmail 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  <script>
+    // 1. DYNAMICALLY LOAD USER PROFILE DETAILS
+    function setUserProfile(email) {
+      const emailElement = document.getElementById('user-email-display');
+      const handleElement = document.getElementById('user-handle-display');
+      const avatarElement = document.getElementById('avatar-initials');
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCf_NZ7EWHWEUt8OIrcHMAu0ffmSLNx_5s",
-      authDomain: "nexoraauth-f1692.firebaseapp.com",
-      projectId: "nexoraauth-f1692",
-      storageBucket: "nexoraauth-f1692.firebasestorage.app",
-      messagingSenderId: "222499366415",
-      appId: "1:222499366415:web:958bd87b357cf8b77d657a",
-      measurementId: "G-TX7N006I"
-    };
+      // Set full email
+      emailElement.innerText = email;
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+      // Generate custom handle (e.g., john.doe@gmail.com -> @johndoe)
+      const namePart = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '');
+      handleElement.innerText = `@${namePart.toLowerCase()}`;
 
-    const userDisplay = document.getElementById('user-display');
-    const profileEmail = document.getElementById('profile-email');
-    const profileUid = document.getElementById('profile-uid');
-    const logoutBtn = document.getElementById('logout-btn');
-    const resetPasswordBtn = document.getElementById('reset-password-btn');
-    const actionMsg = document.getElementById('action-msg');
+      // Set avatar initials
+      avatarElement.innerText = namePart.substring(0, 2).toUpperCase();
+    }
 
-    let currentUser = null;
+    // 2. PAYMENT / ACTIVATE PLAN TRIGGER
+    function triggerPayment(planName, amount) {
+      // Replaces instant "Plan Activated" message with the payment step logic
+      alert(`Initiating secure payment checkout for ${planName} (₦${amount.toLocaleString()})...`);
+    }
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        currentUser = user;
-        userDisplay.textContent = user.email.split('@')[0];
-        profileEmail.value = user.email;
-        profileUid.value = user.uid;
-      } else {
-        const currentPath = window.location.pathname;
-        const directory = currentPath.substring(0, currentPath.lastIndexOf('/'));
-        window.location.href = `${window.location.origin}${directory}/index.html`;
-      }
-    });
+    // Initialize with default or logged-in user email
+    setUserProfile("client.user@gmail.com");
+  </script>// 1. FUNCTION TO RENDER USER DETAILS
+function setUserProfile(email) {
+  const emailElement = document.getElementById('user-email-display');
+  const handleElement = document.getElementById('user-handle-display');
+  const avatarElement = document.getElementById('avatar-initials');
 
-    logoutBtn.addEventListener('click', async () => {
-      await signOut(auth);
-    });
+  if (!email) return;
 
-    resetPasswordBtn.addEventListener('click', async () => {
-      if (currentUser && currentUser.email) {
-        try {
-          await sendPasswordResetEmail(auth, currentUser.email);
-          actionMsg.textContent = "Reset link sent to " + currentUser.email;
-          actionMsg.style.color = "#4ade80";
-        } catch (err) {
-          actionMsg.textContent = err.message;
-          actionMsg.style.color = "#ef4444";
-        }
-      }
-    });
+  // Set full email
+  emailElement.innerText = email;
 
-    window.switchNav = function(event, tabName) {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+  // Clean special characters to generate handle (e.g. john.doe@gmail.com -> @johndoe)
+  const namePart = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '');
+  handleElement.innerText = `@${namePart.toLowerCase()}`;
 
-      document.getElementById('tab-' + tabName).classList.add('active');
-      event.currentTarget.classList.add('active');
-    };
-  </script>
+  // Set avatar initials (first 2 letters)
+  avatarElement.innerText = namePart.substring(0, 2).toUpperCase();
+}
+
+// 2. AUTOMATICALLY FETCH EMAIL ON PAGE LOAD
+window.addEventListener('DOMContentLoaded', () => {
+  // Grab the saved email from browser storage
+  const savedEmail = localStorage.getItem('userEmail');
+
+  if (savedEmail) {
+    // User is logged in -> render their profile
+    setUserProfile(savedEmail);
+  } else {
+    // Optional: Redirect to login page if no logged-in user is found
+    alert('No active session found. Redirecting to login...');
+    window.location.href = 'index.html'; 
+  }
+});
+
+// 3. PAYMENT BUTTON TRIGGER
+function triggerPayment(planName, amount) {
+  const currentEmail = localStorage.getItem('userEmail') || 'Customer';
+  alert(`Initiating payment for ${planName} (₦${amount.toLocaleString()}) for ${currentEmail}...`);
+}
+
 </body>
 </html>
