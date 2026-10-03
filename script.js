@@ -3,6 +3,7 @@ import {
   getAuth, 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
+  signOut,
   onAuthStateChanged 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
@@ -56,13 +57,13 @@ if (loginBtn) {
   });
 }
 
-// Auth State Observer
+// Auth State Observer (Updates the UI when logged in)
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    authStatus.textContent = `Logged in as: ${user.email}`;
+    authStatus.innerHTML = `Welcome! You are logged in as: <strong>${user.email}</strong>`;
     authStatus.style.color = "green";
   } else {
-    authStatus.textContent = "Not logged in";
+    authStatus.textContent = "Please sign up or log in.";
     authStatus.style.color = "#333";
   }
 });
