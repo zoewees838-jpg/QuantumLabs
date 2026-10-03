@@ -3,102 +3,215 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard - Quantum Lab</title>
+  <title>Quantum Lab - Portal</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     body {
-      background-color: #f4f7f6;
-      color: #333;
-      padding: 20px;
-    }
-    .header {
+      background-color: #0f172a;
+      color: #f8fafc;
       display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 250px;
+      background-color: #1e293b;
+      border-right: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
       justify-content: space-between;
+      padding: 20px 0;
+    }
+    .brand {
+      padding: 0 20px 20px 20px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #38bdf8;
+      border-bottom: 1px solid #334155;
+    }
+    .nav-links {
+      list-style: none;
+      margin-top: 20px;
+    }
+    .nav-item {
+      padding: 12px 20px;
+      cursor: pointer;
+      color: #94a3b8;
+      font-weight: 500;
+      display: flex;
       align-items: center;
-      background: #1e293b;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+    .nav-item:hover, .nav-item.active {
+      background-color: #334155;
+      color: #f8fafc;
+      border-left: 4px solid #38bdf8;
+    }
+    .user-block {
+      padding: 15px 20px;
+      border-top: 1px solid #334155;
+    }
+    .logout-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #ef4444;
       color: white;
-      padding: 15px 25px;
-      border-radius: 8px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cards & Form Components */
+    .header-title {
+      font-size: 1.8rem;
       margin-bottom: 20px;
     }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
     .card {
-      background: white;
-      padding: 20px;
+      background-color: #1e293b;
+      border: 1px solid #334155;
       border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 20px;
       margin-bottom: 20px;
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
     }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px;
+      background-color: #0f172a;
+      border: 1px solid #334155;
+      color: white;
+      border-radius: 6px;
+    }
     .btn {
-      background-color: #2563eb;
+      background-color: #0284c7;
       color: white;
       border: none;
-      padding: 10px 16px;
-      border-radius: 5px;
+      padding: 10px 18px;
+      border-radius: 6px;
       cursor: pointer;
-      font-weight: bold;
-    }
-    .btn-danger {
-      background-color: #ef4444;
-    }
-    .btn-secondary {
-      background-color: #64748b;
+      font-weight: 600;
     }
     .btn:hover {
-      opacity: 0.9;
+      background-color: #0369a1;
     }
-    .status-msg {
-      margin-top: 10px;
-      font-size: 0.9em;
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #334155;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <!-- Top Bar -->
-    <div class="header">
-      <h2>Quantum Lab Dashboard</h2>
-      <button id="logout-btn" class="btn btn-danger">Log Out</button>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div>
+      <div class="brand">Quantum Lab</div>
+      <ul class="nav-links">
+        <li class="nav-item active" onclick="switchTab('overview')">Overview</li>
+        <li class="nav-item" onclick="switchTab('workspace')">Workspace</li>
+        <li class="nav-item" onclick="switchTab('settings')">Settings</li>
+      </ul>
     </div>
-
-    <!-- User Profile Overview -->
-    <div class="card">
-      <h3>User Profile</h3>
-      <p style="margin-top: 10px;"><strong>Email:</strong> <span id="user-email">Loading...</span></p>
-      <p style="margin-top: 5px;"><strong>User ID:</strong> <span id="user-uid" style="font-family: monospace;">Loading...</span></p>
-      <p style="margin-top: 5px;"><strong>Account Created:</strong> <span id="user-created">Loading...</span></p>
+    <div class="user-block">
+      <p style="font-size: 0.85rem; color: #94a3b8;">Logged in as:</p>
+      <p id="nav-user-email" style="font-size: 0.9rem; font-weight: 600; word-break: break-all;">Loading...</p>
+      <button id="logout-btn" class="logout-btn">Log Out</button>
     </div>
+  </aside>
 
-    <!-- Quick Actions Grid -->
-    <div class="grid">
+  <!-- Main View -->
+  <main class="main-content">
+
+    <!-- TAB 1: OVERVIEW -->
+    <section id="tab-overview" class="tab-content active">
+      <h1 class="header-title">Dashboard Overview</h1>
+      <div class="grid">
+        <div class="card">
+          <h3>Account Overview</h3>
+          <p style="margin-top: 10px; color: #94a3b8;">UID: <span id="user-uid" style="color: #38bdf8; font-family: monospace;">Loading...</span></p>
+          <p style="margin-top: 5px; color: #94a3b8;">Created: <span id="user-created" style="color: white;">Loading...</span></p>
+        </div>
+        <div class="card">
+          <h3>System Status</h3>
+          <p style="margin-top: 10px; color: #4ade80;">● All Systems Operational</p>
+          <p style="margin-top: 5px; color: #94a3b8;">Firebase Authentication Connected</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: WORKSPACE -->
+    <section id="tab-workspace" class="tab-content">
+      <h1 class="header-title">Lab Workspace</h1>
       <div class="card">
-        <h3>Quick Actions</h3>
-        <p style="margin: 10px 0; font-size: 0.9em;">Manage your security settings directly from here.</p>
-        <button id="reset-pwd-btn" class="btn btn-secondary">Send Password Reset Email</button>
-        <p id="action-status" class="status-msg"></p>
+        <h3>Active Experiments</h3>
+        <p style="color: #94a3b8; margin: 10px 0;">Manage and launch active quantum simulations.</p>
+        <button class="btn" onclick="alert('Module initialized successfully.')">Launch Simulation</button>
+      </div>
+    </section>
+
+    <!-- TAB 3: SETTINGS -->
+    <section id="tab-settings" class="tab-content">
+      <h1 class="header-title">Account & Security Settings</h1>
+      <div class="card">
+        <h3>Profile Settings</h3>
+        <div class="form-group" style="margin-top: 15px;">
+          <label>Display Name</label>
+          <input type="text" id="display-name-input" placeholder="Enter full name" />
+        </div>
+        <button class="btn" onclick="alert('Profile Updated!')">Save Changes</button>
       </div>
 
       <div class="card">
-        <h3>Lab Workspace</h3>
-        <p style="margin: 10px 0; font-size: 0.9em;">Access your project modules and experiments.</p>
-        <button id="copy-uid-btn" class="btn">Copy User ID</button>
+        <h3>Security</h3>
+        <p style="color: #94a3b8; margin-bottom: 15px;">Request a password reset link to your registered email address.</p>
+        <button id="reset-password-btn" class="btn" style="background-color: #475569;">Send Password Reset Email</button>
+        <p id="reset-status" style="margin-top: 10px; font-size: 0.9rem;"></p>
       </div>
-    </div>
-  </div>
+    </section>
+
+  </main>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -122,61 +235,53 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    const userEmail = document.getElementById('user-email');
+    const navUserEmail = document.getElementById('nav-user-email');
     const userUid = document.getElementById('user-uid');
     const userCreated = document.getElementById('user-created');
     const logoutBtn = document.getElementById('logout-btn');
-    const resetPwdBtn = document.getElementById('reset-pwd-btn');
-    const copyUidBtn = document.getElementById('copy-uid-btn');
-    const actionStatus = document.getElementById('action-status');
+    const resetPasswordBtn = document.getElementById('reset-password-btn');
+    const resetStatus = document.getElementById('reset-status');
 
     let currentUser = null;
 
-    // Monitor Auth State
     onAuthStateChanged(auth, (user) => {
       if (user) {
         currentUser = user;
-        userEmail.textContent = user.email;
+        navUserEmail.textContent = user.email;
         userUid.textContent = user.uid;
         userCreated.textContent = user.metadata.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString() : 'N/A';
       } else {
-        // Redirect to login page if user is not authenticated
         const currentPath = window.location.pathname;
         const directory = currentPath.substring(0, currentPath.lastIndexOf('/'));
         window.location.href = `${window.location.origin}${directory}/index.html`;
       }
     });
 
-    // Logout Functionality
     logoutBtn.addEventListener('click', async () => {
-      try {
-        await signOut(auth);
-      } catch (error) {
-        alert("Logout failed: " + error.message);
-      }
+      await signOut(auth);
     });
 
-    // Password Reset Action
-    resetPwdBtn.addEventListener('click', async () => {
+    resetPasswordBtn.addEventListener('click', async () => {
       if (currentUser && currentUser.email) {
         try {
           await sendPasswordResetEmail(auth, currentUser.email);
-          actionStatus.textContent = "Password reset link sent to " + currentUser.email;
-          actionStatus.style.color = "green";
-        } catch (error) {
-          actionStatus.textContent = error.message;
-          actionStatus.style.color = "red";
+          resetStatus.textContent = "Reset link sent to " + currentUser.email;
+          resetStatus.style.color = "#4ade80";
+        } catch (err) {
+          resetStatus.textContent = err.message;
+          resetStatus.style.color = "#ef4444";
         }
       }
     });
 
-    // Copy UID Action
-    copyUidBtn.addEventListener('click', () => {
-      if (currentUser) {
-        navigator.clipboard.writeText(currentUser.uid);
-        alert("User ID copied to clipboard!");
-      }
-    });
+    // Navigation Tab Switcher
+    window.switchTab = function(tabName) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+      
+      document.getElementById('tab-' + tabName).classList.add('active');
+      event.currentTarget.classList.add('active');
+    };
   </script>
 </body>
 </html>
