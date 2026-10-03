@@ -3,11 +3,9 @@ import {
   getAuth, 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
-  signOut,
   onAuthStateChanged 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-// Complete Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCf_NZ7EWHWEUt8OIrcHMAu0ffmSLNx_5s",
   authDomain: "nexoraauth-f1692.firebaseapp.com",
@@ -18,11 +16,9 @@ const firebaseConfig = {
   measurementId: "G-TX7N006I"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Get HTML Elements
 const emailInput = document.getElementById('email-input');
 const passwordInput = document.getElementById('password-input');
 const loginBtn = document.getElementById('login-btn');
@@ -34,8 +30,9 @@ if (signupBtn) {
   signupBtn.addEventListener('click', async () => {
     try {
       await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-      authStatus.textContent = "Account created successfully!";
+      authStatus.textContent = "Account created! Redirecting...";
       authStatus.style.color = "green";
+      setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
     } catch (error) {
       authStatus.textContent = error.message;
       authStatus.style.color = "red";
@@ -48,8 +45,9 @@ if (loginBtn) {
   loginBtn.addEventListener('click', async () => {
     try {
       await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-      authStatus.textContent = "Logged in successfully!";
+      authStatus.textContent = "Logged in successfully! Redirecting...";
       authStatus.style.color = "green";
+      setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
     } catch (error) {
       authStatus.textContent = error.message;
       authStatus.style.color = "red";
@@ -57,13 +55,9 @@ if (loginBtn) {
   });
 }
 
-// Auth State Observer (Updates the UI when logged in)
+// Auth State Check
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    authStatus.innerHTML = `Welcome! You are logged in as: <strong>${user.email}</strong>`;
-    authStatus.style.color = "green";
-  } else {
-    authStatus.textContent = "Please sign up or log in.";
-    authStatus.style.color = "#333";
+    window.location.href = "dashboard.html";
   }
 });
