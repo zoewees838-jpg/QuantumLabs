@@ -28,7 +28,7 @@ const loginBtn = document.getElementById('login-btn');
 const signupBtn = document.getElementById('signup-btn');
 const authStatus = document.getElementById('auth-status');
 
-// Explicit redirect helper for GitHub Pages repository paths
+// Helper function to resolve GitHub Pages subfolder paths automatically
 function goToDashboard() {
   const currentPath = window.location.pathname;
   const directory = currentPath.substring(0, currentPath.lastIndexOf('/'));
@@ -38,7 +38,7 @@ function goToDashboard() {
 // Sign Up
 if (signupBtn) {
   signupBtn.addEventListener('click', async (e) => {
-    e.preventDefault(); // Prevent page reload if inside a form
+    e.preventDefault(); // Prevents instant page reload if inside an HTML form
     try {
       await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
       authStatus.textContent = "Account created! Redirecting...";
@@ -54,7 +54,7 @@ if (signupBtn) {
 // Log In
 if (loginBtn) {
   loginBtn.addEventListener('click', async (e) => {
-    e.preventDefault(); // Prevent page reload if inside a form
+    e.preventDefault(); // Prevents instant page reload if inside an HTML form
     try {
       await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
       authStatus.textContent = "Logged in! Redirecting...";
@@ -67,7 +67,7 @@ if (loginBtn) {
   });
 }
 
-// Auth State Observer
+// Auth State Observer - Redirects automatically if already logged in
 onAuthStateChanged(auth, (user) => {
   if (user && !window.location.pathname.endsWith('dashboard.html')) {
     goToDashboard();
