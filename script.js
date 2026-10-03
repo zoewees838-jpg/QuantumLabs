@@ -6,14 +6,14 @@ import {
   onAuthStateChanged 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-// Firebase configuration
+// Complete Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCf_NZ7EWHWEUt8OIrcHMAu0ffmSLNx_5s",
   authDomain: "nexoraauth-f1692.firebaseapp.com",
   projectId: "nexoraauth-f1692",
   storageBucket: "nexoraauth-f1692.firebasestorage.app",
   messagingSenderId: "222499366415",
-  appId: "1:222499366415:web:958bd87b39...",
+  appId: "1:222499366415:web:958bd87b357cf8b77d657a",
   measurementId: "G-TX7N006I"
 };
 
