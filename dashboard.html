@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quantum Lab - Dashboard</title>
+  <title>TensorWave - Portal</title>
   <style>
     * {
       box-sizing: border-box;
@@ -12,282 +12,454 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     body {
-      background-color: #0f172a;
-      color: #f8fafc;
-      display: flex;
+      background-color: #060b11;
+      color: #e2e8f0;
       min-height: 100vh;
+      padding-bottom: 70px; /* Space for mobile nav bar */
     }
 
-    /* Sidebar Navigation */
-    .sidebar {
-      width: 240px;
-      background-color: #1e293b;
-      border-right: 1px solid #334155;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 20px 0;
-    }
-    .brand {
-      padding: 0 20px 20px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #38bdf8;
-      border-bottom: 1px solid #334155;
-    }
-    .nav-links {
-      list-style: none;
-      margin-top: 15px;
-    }
-    .nav-item {
-      padding: 12px 20px;
-      cursor: pointer;
-      color: #94a3b8;
-      font-weight: 500;
-      border-left: 4px solid transparent;
-      transition: all 0.2s;
-    }
-    .nav-item:hover, .nav-item.active {
-      background-color: #334155;
-      color: #f8fafc;
-      border-left-color: #38bdf8;
-    }
-    .user-block {
+    /* Top Bar Header */
+    .top-header {
+      background: #0b131e;
+      border-bottom: 1px solid #1e293b;
       padding: 15px 20px;
-      border-top: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .logout-btn {
-      width: 100%;
-      padding: 10px;
-      background-color: #ef4444;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 10px;
+    .brand-logo {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #00f2fe;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+    }
+    .user-pill {
+      font-size: 0.75rem;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid #00f2fe44;
+      padding: 4px 10px;
+      border-radius: 20px;
+      color: #38bdf8;
     }
 
-    /* Main Area */
-    .main-content {
-      flex: 1;
-      padding: 25px;
-      overflow-y: auto;
+    /* Main Container */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 15px;
     }
+
     .tab-content {
       display: none;
     }
     .tab-content.active {
       display: block;
     }
-    .header-title {
-      font-size: 1.6rem;
-      margin-bottom: 20px;
+
+    /* Ticker Banner */
+    .ticker-bar {
+      background: #0d1b2a;
+      border: 1px solid #1b2a4a;
+      border-radius: 8px;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      font-size: 0.82rem;
+      color: #94a3b8;
+    }
+    .ticker-icon {
+      background: #00f2fe;
+      color: #060b11;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-weight: bold;
+      font-size: 0.7rem;
     }
 
-    /* Cards & Layout */
-    .card {
-      background-color: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
+    /* Category Filter Buttons */
+    .category-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
     }
-    .grid {
+    .cat-btn {
+      background: #0d1b2a;
+      border: 1px solid #1b2a4a;
+      color: #94a3b8;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .cat-btn.active {
+      background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 0 12px rgba(0, 198, 255, 0.4);
+    }
+
+    /* Stats Overview Card */
+    .balance-card {
+      background: linear-gradient(180deg, #0d1f33 0%, #081220 100%);
+      border: 1px solid #00f2fe44;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+    .balance-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: 1fr 1fr;
       gap: 15px;
+      margin-top: 10px;
+    }
+    .stat-box {
+      background: rgba(6, 11, 17, 0.6);
+      border: 1px solid #1e293b;
+      padding: 12px;
+      border-radius: 8px;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #00f2fe;
     }
 
-    /* Subscriptions & Pricing */
-    .price-card {
-      background-color: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 20px;
-      text-align: center;
+    /* Product Cards (Hardware style) */
+    .product-card {
+      background: #0b1522;
+      border: 1px solid #1b2a4a;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
       position: relative;
     }
-    .price-card.featured {
-      border-color: #38bdf8;
+    .product-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #162438;
+      padding-bottom: 8px;
     }
-    .badge {
-      position: absolute;
-      top: -10px;
-      right: 15px;
-      background: #0284c7;
-      color: white;
-      font-size: 0.75rem;
+    .product-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .badge-tag {
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid #00f2fe;
+      color: #00f2fe;
+      font-size: 0.7rem;
       padding: 2px 8px;
-      border-radius: 12px;
-      font-weight: bold;
+      border-radius: 4px;
     }
-    .old-price {
-      text-decoration: line-through;
-      color: #64748b;
-      font-size: 1rem;
+    .product-body {
+      display: flex;
+      gap: 15px;
+      align-items: center;
     }
-    .new-price {
+    .product-img {
+      width: 70px;
+      height: 70px;
+      background: radial-gradient(circle, rgba(0,242,254,0.2) 0%, rgba(11,21,34,1) 70%);
+      border: 1px solid #00f2fe33;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 1.8rem;
-      font-weight: bold;
-      color: #38bdf8;
-      margin: 10px 0;
     }
-    .btn {
+    .product-details {
+      flex: 1;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+    }
+    .detail-label {
+      color: #64748b;
+    }
+    .detail-value {
+      color: #4ade80;
+      font-weight: 600;
+    }
+
+    .btn-action {
       width: 100%;
-      background-color: #0284c7;
-      color: white;
+      background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+      color: #ffffff;
       border: none;
       padding: 10px;
       border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.9rem;
       cursor: pointer;
-      font-weight: 600;
-    }
-    .btn:hover {
-      background-color: #0369a1;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 10px rgba(0, 198, 255, 0.3);
     }
 
-    /* Settings Form */
+    /* VIP Tier Table Card */
+    .vip-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin-top: 10px;
+    }
+    .vip-table th, .vip-table td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #1b2a4a;
+    }
+    .vip-table th {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    /* Form Controls */
     .form-group {
       margin-bottom: 15px;
     }
     .form-group label {
       display: block;
-      margin-bottom: 5px;
+      font-size: 0.8rem;
       color: #94a3b8;
-      font-size: 0.9rem;
+      margin-bottom: 5px;
     }
     .form-group input {
       width: 100%;
+      background: #060b11;
+      border: 1px solid #1b2a4a;
       padding: 10px;
-      background-color: #0f172a;
-      border: 1px solid #334155;
-      color: white;
+      color: #ffffff;
       border-radius: 6px;
     }
 
-    @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-      }
-      .sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid #334155;
-      }
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #0b131e;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 100;
+    }
+    .nav-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: #64748b;
+      font-size: 0.7rem;
+      cursor: pointer;
+      text-decoration: none;
+      width: 25%;
+    }
+    .nav-tab.active {
+      color: #00f2fe;
+    }
+    .nav-tab-icon {
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div>
-      <div class="brand">Quantum Lab</div>
-      <ul class="nav-links">
-        <li class="nav-item active" onclick="switchTab(event, 'overview')">Overview</li>
-        <li class="nav-item" onclick="switchTab(event, 'earnings')">Earnings</li>
-        <li class="nav-item" onclick="switchTab(event, 'subscribe')">Subscribe</li>
-        <li class="nav-item" onclick="switchTab(event, 'settings')">Settings</li>
-      </ul>
-    </div>
-    <div class="user-block">
-      <p style="font-size: 0.8rem; color: #94a3b8;">Logged in as:</p>
-      <p id="nav-user-email" style="font-size: 0.85rem; font-weight: 600; word-break: break-all;">Loading...</p>
-      <button id="logout-btn" class="logout-btn">Log Out</button>
-    </div>
-  </aside>
+  <!-- Top Header Bar -->
+  <header class="top-header">
+    <div class="brand-logo">TENSORWAVE</div>
+    <div class="user-pill" id="user-display">Loading...</div>
+  </header>
 
-  <!-- Main View Area -->
-  <main class="main-content">
+  <div class="container">
 
-    <!-- OVERVIEW TAB -->
-    <section id="tab-overview" class="tab-content active">
-      <h1 class="header-title">Dashboard Overview</h1>
-      <div class="grid">
-        <div class="card">
-          <h3>Current Plan</h3>
-          <p id="plan-status-display" style="font-size: 1.2rem; color: #38bdf8; font-weight: bold; margin-top: 10px;">Free Tier</p>
-          <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 5px;">Upgrade to unlock full features.</p>
-        </div>
-        <div class="card">
-          <h3>Account Balance</h3>
-          <p id="balance-display" style="font-size: 1.2rem; color: #4ade80; font-weight: bold; margin-top: 10px;">₦0.00</p>
-          <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 5px;">Updated in real-time.</p>
-        </div>
+    <!-- HOME / PRODUCTS TAB -->
+    <section id="tab-home" class="tab-content active">
+      
+      <!-- Ticker -->
+      <div class="ticker-bar">
+        <span class="ticker-icon">NOTICE</span>
+        <marquee behavior="scroll" direction="left">TensorWave platform optimizes cloud AI compute power. Start lease options below.</marquee>
       </div>
-    </section>
 
-    <!-- EARNINGS / MONEY IMPROVEMENT TAB -->
-    <section id="tab-earnings" class="tab-content">
-      <h1 class="header-title">Earnings & Revenue</h1>
-      <div class="card">
-        <h3>Money Growth Tracker</h3>
-        <p style="color: #94a3b8; margin: 10px 0 20px;">Track performance metrics and overall earnings progression.</p>
-        <div class="grid">
-          <div style="background: #0f172a; padding: 15px; border-radius: 6px;">
-            <p style="color: #94a3b8; font-size: 0.85rem;">Total Earned</p>
-            <p style="font-size: 1.4rem; font-weight: bold; color: #4ade80; margin-top: 5px;">₦145,000</p>
+      <!-- Categories -->
+      <div class="category-scroll">
+        <button class="cat-btn active">AI Compute</button>
+        <button class="cat-btn">NVIP Tier</button>
+        <button class="cat-btn">Super AI</button>
+        <button class="cat-btn">Limited-Time</button>
+      </div>
+
+      <!-- Earnings Card (Reset to Default 0.00) -->
+      <div class="balance-card">
+        <div style="font-size: 0.8rem; color: #94a3b8;">Account Revenue Overview</div>
+        <div class="balance-grid">
+          <div class="stat-box">
+            <div class="stat-label">Total Earned</div>
+            <div class="stat-value" id="total-earned">₦0.00</div>
           </div>
-          <div style="background: #0f172a; padding: 15px; border-radius: 6px;">
-            <p style="color: #94a3b8; font-size: 0.85rem;">This Month (+25%)</p>
-            <p style="font-size: 1.4rem; font-weight: bold; color: #38bdf8; margin-top: 5px;">₦32,500</p>
+          <div class="stat-box">
+            <div class="stat-label">This Month</div>
+            <div class="stat-value" id="month-earned">₦0.00</div>
           </div>
         </div>
       </div>
+
+      <!-- Product Card 1 -->
+      <div class="product-card">
+        <div class="product-header">
+          <span class="product-title">TU117 (GTX 1650 core)</span>
+          <span class="badge-tag">In Stock</span>
+        </div>
+        <div class="product-body">
+          <div class="product-img">⚡</div>
+          <div class="product-details">
+            <div class="detail-row">
+              <span class="detail-label">Lease Cycle:</span>
+              <span style="color:#ffffff;">2 Days</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Total Revenue:</span>
+              <span class="detail-value">2,400 NGN</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Lease Amount:</span>
+              <span style="color:#00f2fe; font-weight:700;">3,000 NGN</span>
+            </div>
+          </div>
+        </div>
+        <button class="btn-action" onclick="rentProduct('TU117', 3000)">Rent Equipment</button>
+      </div>
+
+      <!-- Product Card 2 -->
+      <div class="product-card">
+        <div class="product-header">
+          <span class="product-title">GP107 (GTX 1050 Ti core)</span>
+          <span class="badge-tag">In Stock</span>
+        </div>
+        <div class="product-body">
+          <div class="product-img">💻</div>
+          <div class="product-details">
+            <div class="detail-row">
+              <span class="detail-label">Lease Cycle:</span>
+              <span style="color:#ffffff;">5 Days</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Total Revenue:</span>
+              <span class="detail-value">5,800 NGN</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Lease Amount:</span>
+              <span style="color:#00f2fe; font-weight:700;">6,000 NGN</span>
+            </div>
+          </div>
+        </div>
+        <button class="btn-action" onclick="rentProduct('GP107', 6000)">Rent Equipment</button>
+      </div>
+
     </section>
 
-    <!-- SUBSCRIBE TAB -->
-    <section id="tab-subscribe" class="tab-content">
-      <h1 class="header-title">Subscription Plans</h1>
-      <div class="grid">
-        <!-- Standard Tier -->
-        <div class="price-card">
-          <h3>Basic Plan</h3>
-          <div class="new-price">₦1,500 <span style="font-size: 0.8rem; color: #94a3b8;">/mo</span></div>
-          <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px;">Basic tool access & standard support.</p>
-          <button class="btn" onclick="subscribePlan('Basic Plan')">Subscribe Now</button>
-        </div>
-
-        <!-- Pro Tier (Discounted) -->
-        <div class="price-card featured">
-          <span class="badge">PROMO SALE</span>
-          <h3>Pro Lab Access</h3>
-          <div style="margin-top: 10px;">
-            <span class="old-price">₦10,000</span>
-          </div>
-          <div class="new-price">₦3,000 <span style="font-size: 0.8rem; color: #94a3b8;">/mo</span></div>
-          <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px;">Full feature access, priority support, and analytics.</p>
-          <button class="btn" onclick="subscribePlan('Pro Lab (₦3,000)')">Subscribe Now</button>
-        </div>
+    <!-- VIP TIERS TAB -->
+    <section id="tab-vip" class="tab-content">
+      <div class="balance-card">
+        <h3 style="color:#00f2fe; margin-bottom: 10px;">VIP Member Exclusive Tiers</h3>
+        <p style="font-size:0.8rem; color:#94a3b8;">High profits, short cycles, and exclusive compute node access.</p>
+        
+        <table class="vip-table">
+          <thead>
+            <tr>
+              <th>Tier</th>
+              <th>Rent</th>
+              <th>Revenue</th>
+              <th>Cycle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:#00f2fe; font-weight:bold;">VIP 1</td>
+              <td>₦3,000</td>
+              <td style="color:#4ade80;">₦7,581</td>
+              <td>3 Days</td>
+            </tr>
+            <tr>
+              <td style="color:#00f2fe; font-weight:bold;">VIP 2</td>
+              <td>₦19,000</td>
+              <td style="color:#4ade80;">₦28,519</td>
+              <td>3 Days</td>
+            </tr>
+            <tr>
+              <td style="color:#00f2fe; font-weight:bold;">VIP 3</td>
+              <td>₦45,000</td>
+              <td style="color:#4ade80;">₦89,955</td>
+              <td>3 Days</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
-    <!-- SETTINGS TAB -->
-    <section id="tab-settings" class="tab-content">
-      <h1 class="header-title">Account Settings</h1>
-      <div class="card">
-        <h3>Profile Details</h3>
-        <div class="form-group" style="margin-top: 15px;">
-          <label>Email Address</label>
-          <input type="text" id="settings-email" disabled />
+    <!-- SETTINGS / PROFILE TAB -->
+    <section id="tab-profile" class="tab-content">
+      <div class="balance-card">
+        <h3 style="color:#00f2fe; margin-bottom:15px;">Account Settings</h3>
+        <div class="form-group">
+          <label>Registered Email</label>
+          <input type="text" id="profile-email" disabled />
         </div>
         <div class="form-group">
-          <label>Display Name</label>
-          <input type="text" id="display-name" placeholder="Enter display name" />
+          <label>User ID</label>
+          <input type="text" id="profile-uid" disabled />
         </div>
-        <button class="btn" style="width: auto;" onclick="alert('Profile changes saved!')">Save Profile</button>
-      </div>
-
-      <div class="card">
-        <h3>Security</h3>
-        <p style="color: #94a3b8; margin-bottom: 15px;">Reset account password via email link.</p>
-        <button id="reset-pwd-btn" class="btn" style="width: auto; background-color: #475569;">Send Password Reset Link</button>
-        <p id="reset-msg" style="margin-top: 10px; font-size: 0.9rem;"></p>
+        <button class="btn-action" id="reset-password-btn" style="background:#334155; margin-bottom:10px;">Send Password Reset Link</button>
+        <button class="btn-action" id="logout-btn" style="background:#ef4444;">Log Out</button>
+        <p id="action-msg" style="font-size:0.8rem; margin-top:10px; text-align:center;"></p>
       </div>
     </section>
 
-  </main>
+  </div>
+
+  <!-- Bottom Navigation Menu -->
+  <nav class="bottom-nav">
+    <div class="nav-tab active" onclick="switchNav(event, 'home')">
+      <span class="nav-tab-icon">🏠</span>
+      <span>Home</span>
+    </div>
+    <div class="nav-tab" onclick="switchNav(event, 'vip')">
+      <span class="nav-tab-icon">👑</span>
+      <span>VIP Tiers</span>
+    </div>
+    <div class="nav-tab" onclick="switchNav(event, 'profile')">
+      <span class="nav-tab-icon">⚙️</span>
+      <span>Settings</span>
+    </div>
+  </nav>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -311,21 +483,21 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    const navUserEmail = document.getElementById('nav-user-email');
-    const settingsEmail = document.getElementById('settings-email');
+    const userDisplay = document.getElementById('user-display');
+    const profileEmail = document.getElementById('profile-email');
+    const profileUid = document.getElementById('profile-uid');
     const logoutBtn = document.getElementById('logout-btn');
-    const resetPwdBtn = document.getElementById('reset-pwd-btn');
-    const resetMsg = document.getElementById('reset-msg');
-    const planStatusDisplay = document.getElementById('plan-status-display');
+    const resetPasswordBtn = document.getElementById('reset-password-btn');
+    const actionMsg = document.getElementById('action-msg');
 
     let currentUser = null;
 
-    // Authentication Guard
     onAuthStateChanged(auth, (user) => {
       if (user) {
         currentUser = user;
-        navUserEmail.textContent = user.email;
-        settingsEmail.value = user.email;
+        userDisplay.textContent = user.email.split('@')[0];
+        profileEmail.value = user.email;
+        profileUid.value = user.uid;
       } else {
         const currentPath = window.location.pathname;
         const directory = currentPath.substring(0, currentPath.lastIndexOf('/'));
@@ -333,38 +505,34 @@
       }
     });
 
-    // Logout
     logoutBtn.addEventListener('click', async () => {
       await signOut(auth);
     });
 
-    // Password Reset
-    resetPwdBtn.addEventListener('click', async () => {
+    resetPasswordBtn.addEventListener('click', async () => {
       if (currentUser && currentUser.email) {
         try {
           await sendPasswordResetEmail(auth, currentUser.email);
-          resetMsg.textContent = "Reset link dispatched to " + currentUser.email;
-          resetMsg.style.color = "#4ade80";
+          actionMsg.textContent = "Reset link sent to " + currentUser.email;
+          actionMsg.style.color = "#4ade80";
         } catch (err) {
-          resetMsg.textContent = err.message;
-          resetMsg.style.color = "#ef4444";
+          actionMsg.textContent = err.message;
+          actionMsg.style.color = "#ef4444";
         }
       }
     });
 
-    // Global switch tab function
-    window.switchTab = function(event, tabName) {
+    // Navigation Switcher
+    window.switchNav = function(event, tabName) {
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-      
+      document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+
       document.getElementById('tab-' + tabName).classList.add('active');
       event.currentTarget.classList.add('active');
     };
 
-    // Subscription trigger
-    window.subscribePlan = function(planName) {
-      alert("Subscribed to " + planName + " successfully!");
-      planStatusDisplay.textContent = planName;
+    window.rentProduct = function(name, amount) {
+      alert("Order initiated for " + name + " (" + amount + " NGN).");
     };
   </script>
 </body>
