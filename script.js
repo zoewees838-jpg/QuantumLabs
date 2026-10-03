@@ -28,19 +28,22 @@ const loginBtn = document.getElementById('login-btn');
 const signupBtn = document.getElementById('signup-btn');
 const authStatus = document.getElementById('auth-status');
 
-// Helper function to force page load
-function redirectToDashboard() {
-  window.location.assign("./dashboard.html");
+// Explicit redirect helper for GitHub Pages repository paths
+function goToDashboard() {
+  const currentPath = window.location.pathname;
+  const directory = currentPath.substring(0, currentPath.lastIndexOf('/'));
+  window.location.href = `${window.location.origin}${directory}/dashboard.html`;
 }
 
 // Sign Up
 if (signupBtn) {
-  signupBtn.addEventListener('click', async () => {
+  signupBtn.addEventListener('click', async (e) => {
+    e.preventDefault(); // Prevent page reload if inside a form
     try {
       await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
       authStatus.textContent = "Account created! Redirecting...";
       authStatus.style.color = "green";
-      redirectToDashboard();
+      goToDashboard();
     } catch (error) {
       authStatus.textContent = error.message;
       authStatus.style.color = "red";
@@ -50,12 +53,13 @@ if (signupBtn) {
 
 // Log In
 if (loginBtn) {
-  loginBtn.addEventListener('click', async () => {
+  loginBtn.addEventListener('click', async (e) => {
+    e.preventDefault(); // Prevent page reload if inside a form
     try {
       await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
       authStatus.textContent = "Logged in! Redirecting...";
       authStatus.style.color = "green";
-      redirectToDashboard();
+      goToDashboard();
     } catch (error) {
       authStatus.textContent = error.message;
       authStatus.style.color = "red";
@@ -63,9 +67,9 @@ if (loginBtn) {
   });
 }
 
-// Auth State Observer - Redirect if already logged in
+// Auth State Observer
 onAuthStateChanged(auth, (user) => {
-  if (user) {
-    redirectToDashboard();
+  if (user && !window.location.pathname.endsWith('dashboard.html')) {
+    goToDashboard();
   }
 });
