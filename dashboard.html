@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Quantum Labs</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Quantum Labs Dashboard</h1>
+  </header>
+
+  <main style="max-width: 500px; margin: 40px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; text-align: center;">
+    <h2>Welcome to Your Dashboard!</h2>
+    <p id="user-display">Loading account details...</p>
+    <button id="logout-btn" style="padding: 10px 20px; margin-top: 15px; cursor: pointer;">Log Out</button>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCf_NZ7EWHWEUt8OIrcHMAu0ffmSLNx_5s",
+      authDomain: "nexoraauth-f1692.firebaseapp.com",
+      projectId: "nexoraauth-f1692",
+      storageBucket: "nexoraauth-f1692.firebasestorage.app",
+      messagingSenderId: "222499366415",
+      appId: "1:222499366415:web:958bd87b357cf8b77d657a",
+      measurementId: "G-TX7N006I"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const userDisplay = document.getElementById('user-display');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userDisplay.textContent = `Logged in as: ${user.email}`;
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+
+    logoutBtn.addEventListener('click', async () => {
+      await signOut(auth);
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
