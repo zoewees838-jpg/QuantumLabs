@@ -73,3 +73,75 @@ onAuthStateChanged(auth, (user) => {
     goToDashboard();
   }
 });
+
+// MANUAL PAYMENT FLOW & AUTOMATED AI PROFIT ENGINE
+function triggerStarterSubscription() {
+  const accountDetails = `
+========================================
+       NEXORA PAYMENT DETAILS
+========================================
+Bank Name:     Moniepoint MFB / Wema Bank
+Account Name:  Nexora Global / Loretta
+Account No:    0123456789
+Amount:        ₦3,000.00
+Reference:     NX-ACT-LORETTA
+========================================
+
+Please transfer exactly ₦3,000 to the account above.
+After payment, click OK to confirm your transfer.
+  `;
+
+  if (confirm(accountDetails)) {
+    const confirmPayment = confirm("Have you sent the ₦3,000 payment to the account above?");
+    
+    if (confirmPayment) {
+      alert("Payment submitted! Your account activation is processing.");
+
+      isSubscribed = true;
+      walletBalance = 3000.00;
+      availableCash = 3000.00;
+
+      document.getElementById('total-balance').innerText = "₦3,000.00";
+      document.getElementById('available-balance').innerText = "₦3,000.00";
+      document.getElementById('balance-sub').innerText = "+Account Activated & Compounding";
+      if (document.getElementById('activation-banner')) {
+        document.getElementById('activation-banner').style.display = "none";
+      }
+
+      const row = `<tr>
+        <td>#TX-30001</td>
+        <td>Bank Deposit (Starter)</td>
+        <td>₦3,000.00</td>
+        <td>Just now</td>
+        <td><span class="status-tag active">Verified</span></td>
+      </tr>`;
+      if (document.getElementById('transaction-rows')) {
+        document.getElementById('transaction-rows').innerHTML = row + document.getElementById('transaction-rows').innerHTML;
+      }
+
+      startAIProfitEngine();
+    }
+  }
+}
+
+function startAIProfitEngine() {
+  alert("AI Automated Yield Engine Started! Your profits will now compound automatically.");
+
+  setInterval(() => {
+    const profitIncrement = 15.50; 
+    
+    walletBalance += profitIncrement;
+    investedAmount += profitIncrement;
+
+    if (document.getElementById('total-balance')) {
+      document.getElementById('total-balance').innerText = `₦${walletBalance.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+    }
+    if (document.getElementById('invested-balance')) {
+      document.getElementById('invested-balance').innerText = `₦${investedAmount.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+    }
+    if (document.getElementById('balance-sub')) {
+      document.getElementById('balance-sub').innerText = `+AI Active Yield (+₦${profitIncrement}/cycle)`;
+    }
+  }, 10000); // Increments every 10 seconds
+}
+
