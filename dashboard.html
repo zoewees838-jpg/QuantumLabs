@@ -256,6 +256,22 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* WELCOME HARDCODED HEADER */
+    .welcome-header {
+      margin-bottom: 24px;
+    }
+
+    .welcome-header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .welcome-header p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
     /* ACTIVATION BANNER NOTICE */
     .activation-notice {
       background: linear-gradient(135deg, rgba(230, 57, 70, 0.15), rgba(29, 53, 87, 0.3));
@@ -466,7 +482,7 @@
 </head>
 <body>
 
-  <!-- TOP HEADER NAVBAR -->
+  <!-- TOP HEADER NAVBAR WITH HARDCODED LORETTA AVATAR & NAME -->
   <header class="navbar">
     <div class="brand-area">
       <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
@@ -480,10 +496,10 @@
       <button class="theme-toggle-btn" onclick="toggleTheme()">☀️ / 🌙</button>
 
       <div class="user-profile-widget">
-        <div class="avatar" id="avatar-initials">NX</div>
+        <div class="avatar" id="avatar-initials">L</div>
         <div class="user-details">
-          <span class="user-email" id="user-email-display">investor@nexora.com</span>
-          <span class="user-handle" id="user-handle-display">@investornexora</span>
+          <span class="user-email" id="user-email-display">Loretta</span>
+          <span class="user-handle" id="user-handle-display">@loretta</span>
         </div>
       </div>
 
@@ -511,6 +527,12 @@
 
       <!-- TAB 1: MAIN DASHBOARD -->
       <section id="tab-dashboard" class="tab-section active">
+
+        <!-- HARDCODED WELCOME GREETING -->
+        <div class="welcome-header">
+          <h1>Welcome back, Loretta! 👋</h1>
+          <p>Here is your current portfolio status and account breakdown.</p>
+        </div>
         
         <!-- ACTIVATION BANNER FOR INITIAL 0.00 BALANCE STATE -->
         <div class="activation-notice" id="activation-banner">
@@ -643,7 +665,7 @@
         <div class="data-card">
           <h3>Referral Program</h3>
           <p style="margin-bottom: 14px; color: var(--text-muted);">Share your link to earn a 5% commission on friends' activations.</p>
-          <input type="text" readonly value="https://nexora.vip/ref/investornexora" style="width: 100%; padding: 12px; background: var(--bg-dark); border: 1px solid var(--card-border); color: var(--text-main); border-radius: 6px; margin-bottom: 14px;">
+          <input type="text" readonly value="https://nexora.vip/ref/loretta" style="width: 100%; padding: 12px; background: var(--bg-dark); border: 1px solid var(--card-border); color: var(--text-main); border-radius: 6px; margin-bottom: 14px;">
           <button class="btn-action" onclick="alert('Referral Link Copied!')">Copy Link</button>
         </div>
       </section>
@@ -652,7 +674,7 @@
       <section id="tab-notifications" class="tab-section">
         <div class="data-card">
           <h3>Notifications & Alerts</h3>
-          <p style="color: var(--text-muted);">Welcome to Nexora! Please activate your account for ₦3,000 to begin.</p>
+          <p style="color: var(--text-muted);">Welcome to Nexora, Loretta! Please activate your account for ₦3,000 to begin.</p>
         </div>
       </section>
 
@@ -660,6 +682,7 @@
       <section id="tab-account" class="tab-section">
         <div class="data-card">
           <h3>Verification & Security</h3>
+          <p style="color: var(--text-muted); margin-bottom: 6px;">Account Holder: <strong>Loretta</strong></p>
           <p style="color: var(--text-muted); margin-bottom: 12px;">KYC Status: <strong style="color: var(--warning-amber);">Unverified</strong></p>
           <button class="btn-secondary" onclick="alert('Upload ID Portal Coming Soon')">Verify Identity (KYC)</button>
         </div>
@@ -669,7 +692,7 @@
       <section id="tab-support" class="tab-section">
         <div class="data-card">
           <h3>Help & Customer Service</h3>
-          <p style="color: var(--text-muted); margin-bottom: 12px;">Need assistance with your account or deposit?</p>
+          <p style="color: var(--text-muted); margin-bottom: 12px;">Need assistance with your account or deposit, Loretta?</p>
           <button class="btn-action" onclick="alert('Support Ticket Created. Agent assigned.')">Contact Support</button>
         </div>
       </section>
@@ -684,18 +707,12 @@
     let investedAmount = 0.00;
     let availableCash = 0.00;
 
-    // 1. RENDER USER DETAILS FROM LOCALSTORAGE
-    function setUserProfile(email) {
-      const emailElem = document.getElementById('user-email-display');
-      const handleElem = document.getElementById('user-handle-display');
-      const avatarElem = document.getElementById('avatar-initials');
-
-      if (!email) return;
-
-      emailElem.innerText = email;
-      const namePart = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '');
-      handleElem.innerText = `@${namePart.toLowerCase()}`;
-      avatarElem.innerText = namePart.substring(0, 2).toUpperCase();
+    // 1. HARDCODED PROFILE INITIALIZER FOR LORETTA
+    function setUserProfile() {
+      document.getElementById('user-email-display').innerText = "Loretta";
+      document.getElementById('user-handle-display').innerText = "@loretta";
+      document.getElementById('avatar-initials').innerText = "L";
+      localStorage.setItem('userEmail', 'Loretta');
     }
 
     // 2. TAB NAVIGATION SYSTEM
@@ -722,7 +739,7 @@
 
     // 5. TRIGGER 3,000 ACTIVATION SUBSCRIPTION
     function triggerStarterSubscription() {
-      alert("Initializing ₦3,000 Starter Activation Payment...");
+      alert("Initializing ₦3,000 Starter Activation Payment for Loretta...");
 
       // Update state
       isSubscribed = true;
@@ -745,7 +762,7 @@
       </tr>`;
       document.getElementById('transaction-rows').innerHTML = row + document.getElementById('transaction-rows').innerHTML;
 
-      alert("Activation Successful! Your balance is now ₦3,000.00.");
+      alert("Activation Successful! Welcome aboard, Loretta. Your balance is now ₦3,000.00.");
     }
 
     // 6. QUICK DEPOSIT ACTION
@@ -782,8 +799,7 @@
 
     // INITIALIZE CHART & USER SESSION
     window.addEventListener('DOMContentLoaded', () => {
-      const savedEmail = localStorage.getItem('userEmail') || "investor.nexora@gmail.com";
-      setUserProfile(savedEmail);
+      setUserProfile();
 
       // Initialize Chart.js
       const ctx = document.getElementById('portfolioChart').getContext('2d');
